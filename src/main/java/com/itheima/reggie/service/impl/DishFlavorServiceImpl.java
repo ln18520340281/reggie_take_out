@@ -9,5 +9,4 @@ import com.itheima.reggie.service.DishFlavorService;
 
 @Service
 public class DishFlavorServiceImpl extends ServiceImpl<DishFlavorMapper, DishFlavor> implements DishFlavorService{
-
 }
