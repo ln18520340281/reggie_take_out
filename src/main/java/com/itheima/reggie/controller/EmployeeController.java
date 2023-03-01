@@ -79,7 +79,7 @@ public class EmployeeController {
 	 * @param employee
 	 * @return
 	 */
-	@PostMapping("")
+	@PostMapping
 	public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
 		log.info("新增员工，该员工信息{}", employee.toString());
 		employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));

@@ -18,15 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itheima.reggie.common.R;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 文件上传通用controller
  * 
  * @author 24166
  *
  */
-@Slf4j
 @RestController
 @RequestMapping("/common")
 public class CommonController {
