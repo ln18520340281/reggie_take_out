@@ -39,7 +39,7 @@ public class LoginCheckFilter implements Filter {
 		String requestURL = httpServletRequest.getRequestURI();
 
 		log.info("拦截到请求：{}", requestURL);
-		String[] urls = new String[] { "/employee/login", "/employee/logout", "/backend/**", "/front/**" };
+		String[] urls = new String[] { "/employee/login", "/employee/logout", "/backend/**", "/front/**","common/**" };
 
 		boolean check = check(urls, requestURL);
 
