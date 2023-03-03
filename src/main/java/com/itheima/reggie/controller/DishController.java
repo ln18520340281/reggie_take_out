@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,6 +78,17 @@ public class DishController {
 	public R<String> save(@RequestBody DishDto dishDto) {
 		dishService.saveWithFlavor(dishDto);
 		return R.success("新增菜品成功");
+	}
+
+	/**
+	 * 修改菜品
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/{id}")
+	public R<DishDto> update(@PathVariable Long id) {
+		DishDto dishDto = dishService.getByIdWithFlavor(id);
+		return R.success(dishDto);
 	}
 
 }

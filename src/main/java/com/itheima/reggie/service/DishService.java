@@ -7,4 +7,5 @@ import com.itheima.reggie.entity.Dish;
 //泛型中的是实体类
 public interface DishService extends IService<Dish>{
 	public void saveWithFlavor(DishDto dishDto);
+	public DishDto getByIdWithFlavor(Long id);
 }
