@@ -1,5 +1,9 @@
 package com.itheima.reggie.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +17,7 @@ import com.itheima.reggie.common.R;
 import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.entity.Dish;
-import com.itheima.reggie.service.DishFlavorService;
+import com.itheima.reggie.service.CategoryService;
 import com.itheima.reggie.service.DishService;
 
 @RestController
@@ -23,19 +27,46 @@ public class DishController {
 	private DishService dishService;
 //	@Autowired
 //	private DishFlavorService dishFlavorService;
+	@Autowired
+	private CategoryService categoryService;
 
+	/**
+	 * 分页
+	 * 
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
 	@GetMapping("/page")
-	public R<Page<Dish>> pageSearch(Integer page, Integer pageSize) {
+	public R<Page<DishDto>> pageSearch(Integer page, Integer pageSize, String name) {
 		// log.info("page={},pagesize={},name={}", page, pageSize, name);
 
 		LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<Dish>();
-		queryWrapper.orderByDesc(Dish::getSort);
+		queryWrapper.like(name != null, Dish::getName, name);
+		queryWrapper.orderByDesc(Dish::getUpdateTime);
 
 		Page<Dish> pageinfo = new Page<>(page, pageSize);
+		Page<DishDto> pageinfo2 = new Page<>(page, pageSize);
 		dishService.page(pageinfo, queryWrapper);
-		return R.success(pageinfo);
+
+		BeanUtils.copyProperties(pageinfo, pageinfo2, "records");
+		List<Dish> records = pageinfo.getRecords();
+		List<DishDto> list = records.stream().map((item) -> {
+			DishDto dishDto = new DishDto();
+			BeanUtils.copyProperties(item, dishDto);
+			Long categoryId = item.getCategoryId();
+			Category category = categoryService.getById(categoryId);
+			if (category != null) {
+				String categoryName = category.getName();
+				dishDto.setCategoryName(categoryName);
+			}
+			return dishDto;
+		}).collect(Collectors.toList());
+
+		pageinfo2.setRecords(list);
+		return R.success(pageinfo2);
 	}
-	
+
 	/**
 	 * 新增菜品
 	 * 
