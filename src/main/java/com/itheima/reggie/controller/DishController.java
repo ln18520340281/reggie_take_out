@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,9 +87,21 @@ public class DishController {
 	 * @return
 	 */
 	@GetMapping("/{id}")
-	public R<DishDto> update(@PathVariable Long id) {
+	public R<DishDto> search(@PathVariable Long id) {
 		DishDto dishDto = dishService.getByIdWithFlavor(id);
 		return R.success(dishDto);
 	}
 
+	
+	/**
+	 * 修改菜品
+	 * 
+	 * @param dishDto
+	 * @return
+	 */
+	@PutMapping
+	public R<String> update(@RequestBody DishDto dishDto) {
+		dishService.updateWithFlavor(dishDto);
+		return R.success("新增菜品成功");
+	}
 }
