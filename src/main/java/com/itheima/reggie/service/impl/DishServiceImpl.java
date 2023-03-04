@@ -63,6 +63,12 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 	@Override
 	@Transactional
 	public void updateWithFlavor(DishDto dishDto) {
+		/*
+		 * 虽然说这里是更新了dishDto，但是这个this是dishservice的对象，所以底层进行了向上转型，
+		 * dishdto拓展了dish，所以向上转型成dish，然后再保存到数据库里面。
+		 * 
+		 * 虽然修改了菜品的dish部分，但是dish的口味表还没有修改，所以要加上口味表的操作部分
+		 */
 		this.updateById(dishDto);
 
 		LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<DishFlavor>();
@@ -72,10 +78,10 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 		// 新增新的口味
 		List<DishFlavor> flavors = dishDto.getFlavors();
 
-		flavors = flavors.stream().map((item) -> {
-			item.setDishId(dishDto.getId());
-			return item;
-		}).collect(Collectors.toList());
+//		flavors = flavors.stream().map((item) -> {
+//			item.setDishId(dishDto.getId());
+//			return item;
+//		}).collect(Collectors.toList());
 
 		dishFlavorService.saveBatch(flavors);
 	}

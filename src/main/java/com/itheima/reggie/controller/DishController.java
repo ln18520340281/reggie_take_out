@@ -83,6 +83,7 @@ public class DishController {
 
 	/**
 	 * 修改菜品
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -92,7 +93,6 @@ public class DishController {
 		return R.success(dishDto);
 	}
 
-	
 	/**
 	 * 修改菜品
 	 * 
@@ -103,5 +103,22 @@ public class DishController {
 	public R<String> update(@RequestBody DishDto dishDto) {
 		dishService.updateWithFlavor(dishDto);
 		return R.success("新增菜品成功");
+	}
+
+	/**
+	 * 根据条件查询菜品数据
+	 * 
+	 * @param dish
+	 * @return
+	 */
+	@GetMapping("/list")
+	public R<List<Dish>> list(Dish dish) {
+		LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+		queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
+		queryWrapper.eq(Dish::getStatus, 1);
+		queryWrapper.orderByAsc(Dish::getSort).orderByAsc(Dish::getUpdateTime);
+
+		List<Dish> list = dishService.list(queryWrapper);
+		return R.success(list);
 	}
 }

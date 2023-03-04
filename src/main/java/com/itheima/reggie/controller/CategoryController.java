@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.Dish;
 import com.itheima.reggie.service.CategoryService;
 
 @RestController
@@ -94,5 +95,10 @@ public class CategoryController {
 
 		List<Category> list = categoryService.list(queryWrapper);
 		return R.success(list);
+	}
+	
+	//菜品列表
+	public R<List<Dish>> list(Dish dish){
+		return null;
 	}
 }
